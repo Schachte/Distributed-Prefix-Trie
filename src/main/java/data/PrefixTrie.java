@@ -37,11 +37,11 @@ public class PrefixTrie {
      *
      * @param phrase Input phrase to be inserted into the prefix trie
      */
-    public void insertPrefixRecursive(String phrase) {
-        insertPrefixRecursive(root, phrase, 0);
+    public void insertPrefix(String phrase) {
+        insertPrefix(root, phrase, 0);
     }
 
-    private void insertPrefixRecursive(TrieNode curr, String phrase, int index) {
+    private void insertPrefix(TrieNode curr, String phrase, int index) {
         if (phrase.length() == index) {
             curr.eow = true;
             return;
@@ -55,7 +55,7 @@ public class PrefixTrie {
             curr.children.put(currChar, currNode);
         }
 
-        insertPrefixRecursive(currNode, phrase, index + 1);
+        insertPrefix(currNode, phrase, index + 1);
     }
 
     /**
