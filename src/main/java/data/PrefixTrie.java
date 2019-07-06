@@ -75,19 +75,15 @@ public class PrefixTrie {
 
     private List<String> prefixDfs(TrieNode node, List<String> result, StringBuilder currWord, String phrase) {
         if (node.eow) {
-            // Prepend the prefix phrase to matched pattern
             currWord.insert(0, phrase);
             result.add(currWord.toString());
+
+            if (isLeaf(node)) return result;
         }
 
-        // Final check to determine leaf or not
-        if (node.children.size() == 0) {
-            return result;
-        }
-
-        for (Character child : node.children.keySet()) {
-            prefixDfs(node.children.get(child), result, currWord.append(child), phrase);
-        }
+        node.children.keySet().stream().forEach(child ->
+                prefixDfs(node.children.get(child), result, currWord.append(child), phrase)
+        );
 
         return result;
     }
@@ -117,5 +113,14 @@ public class PrefixTrie {
 
     public void killTrie() {
         this.root = new TrieNode();
+    }
+
+    /**
+     * EOW (end of word) doesn't imply leaf, but lack of children does
+     *
+     * @return true if the children of a given TrieNode map is empty
+     */
+    private boolean isLeaf(TrieNode node) {
+        return node.children.isEmpty();
     }
 }
