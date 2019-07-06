@@ -22,7 +22,7 @@ public class PrefixTrie {
         }
     }
 
-    private final TrieNode root;
+    private TrieNode root;
 
     public PrefixTrie() {
         root = new TrieNode();
@@ -38,7 +38,7 @@ public class PrefixTrie {
      * @param phrase Input phrase to be inserted into the prefix trie
      */
     public void insertPrefix(String phrase) {
-        insertPrefix(root, phrase, 0);
+        insertPrefix(root, phrase.toLowerCase(), 0);
     }
 
     private void insertPrefix(TrieNode curr, String phrase, int index) {
@@ -68,14 +68,16 @@ public class PrefixTrie {
         TrieNode subtree = findSubtree(phrase);
 
         if (subtree != null) {
-            return prefixDfs(subtree, new ArrayList<>(), "", phrase);
+            return prefixDfs(subtree, new ArrayList<>(), new StringBuilder(), phrase.toLowerCase());
         }
         return Collections.emptyList();
     }
 
-    private List<String> prefixDfs(TrieNode node, List<String> result, String currWord, String phrase) {
+    private List<String> prefixDfs(TrieNode node, List<String> result, StringBuilder currWord, String phrase) {
         if (node.eow) {
-            result.add(phrase + currWord);
+            // Prepend the prefix phrase to matched pattern
+            currWord.insert(0, phrase);
+            result.add(currWord.toString());
         }
 
         // Final check to determine leaf or not
@@ -84,12 +86,11 @@ public class PrefixTrie {
         }
 
         for (Character child : node.children.keySet()) {
-            prefixDfs(node.children.get(child), result, currWord + child, phrase);
+            prefixDfs(node.children.get(child), result, currWord.append(child), phrase);
         }
 
         return result;
     }
-
 
     /**
      * This will find a subtree within the tree to do pattern matching of phrase prefixes
@@ -98,7 +99,7 @@ public class PrefixTrie {
      * @return TrieNode that matches the find of a particular trie subtree
      */
     public TrieNode findSubtree(String phrase) {
-        return findSubtree(phrase, 0, getRoot());
+        return findSubtree(phrase.toLowerCase(), 0, getRoot());
     }
 
     private TrieNode findSubtree(String phrase, int index, TrieNode currNode) {
@@ -112,5 +113,9 @@ public class PrefixTrie {
         if (tmp == null) return null;
 
         return findSubtree(phrase, index + 1, tmp);
+    }
+
+    public void killTrie() {
+        this.root = new TrieNode();
     }
 }
