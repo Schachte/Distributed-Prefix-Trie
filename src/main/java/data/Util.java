@@ -14,22 +14,49 @@ public class Util {
     private PrefixTrie trie;
 
     public Util() {
-        this.trie = initializeOrLoad();
+        this.trie = new PrefixTrie();
     }
 
-    public PrefixTrie initializeOrLoad() {
-        if (trie == null) {
-            trie = new PrefixTrie();
-        }
-        return trie;
-    }
-
+    /**
+     * Grabs current instance of the trie loaded into memory
+     */
     public PrefixTrie retrieveTrie() {
         return trie;
     }
 
-    public PrefixTrie load(String inputFile) throws FileNotFoundException {
-        PrefixTrie trie = initializeOrLoad();
+    /**
+     * Loads strings from a file into the trie. This is useful when rebuilding
+     * the trie from disk and back into memory. This will be executed when the tree is torn
+     * down and the top K values are loaded into the trie from disk.
+     *
+     * @param inputFile representing path of textual data to inject into the tree
+     * @return PrefixTrie instance of a new tree
+     * @throws FileNotFoundException
+     */
+    public PrefixTrie loadNew(String inputFile) throws FileNotFoundException {
+        PrefixTrie newTrie = new PrefixTrie();
+        Scanner sc = new Scanner(new File(inputFile));
+
+        while (sc.hasNextLine()) {
+            String currString = sc.next();
+            newTrie.insertPrefix(currString);
+        }
+
+        trie.killTrie();
+        trie = newTrie;
+
+        return trie;
+    }
+
+    /**
+     * Loads strings from a file into the trie. This is useful when inserting new values
+     * into an already existing tree that you want to still maintain.
+     *
+     * @param inputFile representing path of textual data to inject into the tree
+     * @return PrefixTrie that is the current instance
+     * @throws FileNotFoundException
+     */
+    public PrefixTrie loadCurrent(String inputFile) throws FileNotFoundException {
         Scanner sc = new Scanner(new File(inputFile));
 
         while (sc.hasNextLine()) {

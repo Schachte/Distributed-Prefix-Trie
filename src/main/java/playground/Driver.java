@@ -10,8 +10,6 @@ public class Driver {
         Util trieUtil = new Util();
         PrefixTrie trie = trieUtil.retrieveTrie();
         trie.insertPrefix("Ryan Schachte");
-
         List<String> results = trie.prefixDfs("r");
-
     }
 }
