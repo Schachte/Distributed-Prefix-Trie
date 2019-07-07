@@ -1,4 +1,4 @@
-package data;
+package com.schachte.autocomplete.data;
 
 import java.util.*;
 
@@ -15,10 +15,15 @@ public class PrefixTrie {
     public static class TrieNode {
         protected Map<Character, TrieNode> children;
         protected boolean eow;
+        protected long count = 0;
 
         public TrieNode() {
             children = new HashMap<>();
             eow = false;
+        }
+
+        public int getChildCount() {
+            return children.size();
         }
     }
 
@@ -44,6 +49,7 @@ public class PrefixTrie {
     private void insertPrefix(TrieNode curr, String phrase, int index) {
         if (phrase.length() == index) {
             curr.eow = true;
+            curr.count = 1;
             return;
         }
 
@@ -78,7 +84,11 @@ public class PrefixTrie {
             currWord.insert(0, phrase);
             result.add(currWord.toString());
 
-            if (isLeaf(node)) return result;
+            if (isLeaf(node)) {
+                // Tracks access count of a given node for analytics and aggregation
+                node.count += 1;
+                return result;
+            }
         }
 
         node.children.keySet().stream().forEach(child ->

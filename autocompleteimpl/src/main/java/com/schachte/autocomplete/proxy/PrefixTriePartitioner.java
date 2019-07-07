@@ -1,4 +1,4 @@
-package proxy;
+package com.schachte.autocomplete.proxy;
 
 import java.util.*;
 
@@ -53,7 +53,7 @@ public class PrefixTriePartitioner {
 
     /**
      * Overarching goal is to redirect the user request to the proper IP address
-     * of the prefix trie containing the data of the requested prefix phrase.
+     * of the prefix trie containing the com.schachte.autocomplete.data of the requested prefix phrase.
      *
      * @param prefixReq The requesting prefix phrase from the client
      * @return IP address matching the range of the prefix

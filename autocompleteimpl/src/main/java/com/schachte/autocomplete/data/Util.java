@@ -1,4 +1,4 @@
-package data;
+package com.schachte.autocomplete.data;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,7 +29,7 @@ public class Util {
      * the trie from disk and back into memory. This will be executed when the tree is torn
      * down and the top K values are loaded into the trie from disk.
      *
-     * @param inputFile representing path of textual data to inject into the tree
+     * @param inputFile representing path of textual com.schachte.autocomplete.data to inject into the tree
      * @return PrefixTrie instance of a new tree
      * @throws FileNotFoundException
      */
@@ -52,7 +52,7 @@ public class Util {
      * Loads strings from a file into the trie. This is useful when inserting new values
      * into an already existing tree that you want to still maintain.
      *
-     * @param inputFile representing path of textual data to inject into the tree
+     * @param inputFile representing path of textual com.schachte.autocomplete.data to inject into the tree
      * @return PrefixTrie that is the current instance
      * @throws FileNotFoundException
      */
